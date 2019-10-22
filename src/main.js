@@ -6,6 +6,10 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+import firebase from 'firebase'
+require("firebase/firestore")
+
+
 Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
@@ -20,8 +24,12 @@ var firebaseConfig = {
   messagingSenderId: "956651778264",
   appId: "1:956651778264:web:b6d989b71a2ce48c23e7ad"
 };
+
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+
+const db = firebase.firestore();
+window.db = db;
 
 new Vue({
   router,

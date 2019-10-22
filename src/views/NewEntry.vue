@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-container>
-      <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+      <b-form @submit="onSubmit" class='mb-2'>
         <b-form-group id="input-group-2" label="Your Name:" label-for="input-2">
           <b-form-input
             id="input-2"
@@ -20,8 +20,17 @@
           ></b-form-input>
         </b-form-group>
 
+        <b-form-group id="input-group-4" label="Title:" label-for="input-4">
+          <b-form-input
+            id="input-4"
+            v-model="form.title"
+            required
+            placeholder="Enter Title For Listing"
+          ></b-form-input>
+        </b-form-group>
 
-        <b-form-group id="input-group-4" label="Description:">
+
+        <b-form-group id="input-group-5" label="Description:">
           <b-form-textarea
             id="textarea"
             v-model="form.description"
@@ -33,7 +42,6 @@
 
 
         <b-button type="submit" variant="primary">Submit</b-button>
-        <b-button type="reset" variant="danger">Reset</b-button>
       </b-form>
       <b-card class="mt-3" header="Form Data Result">
         <pre class="m-0">{{ form }}</pre>
@@ -49,30 +57,27 @@
         form: {
           name: '',
           price: '',
-          description: ''
+          description: '',
+          title: ''
         },
-        foods: [{ text: 'Select One', value: null }, 'Carrots', 'Beans', 'Tomatoes', 'Corn'],
-        show: true
       }
     },
     methods: {
-      onSubmit(evt) {
-        evt.preventDefault()
-        alert(JSON.stringify(this.form))
-      },
-      onReset(evt) {
-        evt.preventDefault()
-        // Reset our form values
-        this.form.email = ''
-        this.form.name = ''
-        this.form.food = null
-        this.form.checked = []
-        // Trick to reset/clear native browser form validation state
-        this.show = false
-        this.$nextTick(() => {
-          this.show = true
+      onSubmit(event) {
+        event.preventDefault();
+        db.collection("Offerings").add({
+          Name: this.form.name,
+          Price: this.form.price,
+          Description: this.form.description,
+          Title: this.form.title
         })
-      }
+        .then(function() {
+            console.log("Document successfully written!");
+        })
+        .catch(function(error) {
+            console.error("Error writing document: ", error);
+        });
+      },
     }
   }
 </script>

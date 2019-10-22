@@ -1,42 +1,78 @@
 <template>
   <div>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="basic-addon1">@</span>
-      </div>
-      <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-    </div>
+    <b-container>
+      <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+        <b-form-group id="input-group-2" label="Your Name:" label-for="input-2">
+          <b-form-input
+            id="input-2"
+            v-model="form.name"
+            required
+            placeholder="Enter name"
+          ></b-form-input>
+        </b-form-group>
 
-    <div class="input-group mb-3">
-      <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
-      <div class="input-group-append">
-        <span class="input-group-text" id="basic-addon2">@example.com</span>
-      </div>
-    </div>
+        <b-form-group id="input-group-3" label="Price:" label-for="input-3">
+          <b-form-input
+            id="input-3"
+            v-model="form.price"
+            required
+            placeholder="Enter Price"
+          ></b-form-input>
+        </b-form-group>
 
-    <label for="basic-url">Your vanity URL</label>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="basic-addon3">https://example.com/users/</span>
-      </div>
-      <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
-    </div>
 
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text">$</span>
-      </div>
-      <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-      <div class="input-group-append">
-        <span class="input-group-text">.00</span>
-      </div>
-    </div>
+        <b-form-group id="input-group-4" label="Description:">
+          <b-form-textarea
+            id="textarea"
+            v-model="form.description"
+            placeholder="Description..."
+            rows="3"
+            max-rows="6"
+          ></b-form-textarea>
+        </b-form-group>
 
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <span class="input-group-text">With textarea</span>
-      </div>
-      <textarea class="form-control" aria-label="With textarea"></textarea>
-    </div>
+
+        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-button type="reset" variant="danger">Reset</b-button>
+      </b-form>
+      <b-card class="mt-3" header="Form Data Result">
+        <pre class="m-0">{{ form }}</pre>
+      </b-card>
+    </b-container>
   </div>
 </template>
+
+<script>
+  export default {
+    data() {
+      return {
+        form: {
+          name: '',
+          price: '',
+          description: ''
+        },
+        foods: [{ text: 'Select One', value: null }, 'Carrots', 'Beans', 'Tomatoes', 'Corn'],
+        show: true
+      }
+    },
+    methods: {
+      onSubmit(evt) {
+        evt.preventDefault()
+        alert(JSON.stringify(this.form))
+      },
+      onReset(evt) {
+        evt.preventDefault()
+        // Reset our form values
+        this.form.email = ''
+        this.form.name = ''
+        this.form.food = null
+        this.form.checked = []
+        // Trick to reset/clear native browser form validation state
+        this.show = false
+        this.$nextTick(() => {
+          this.show = true
+        })
+      }
+    }
+  }
+</script>

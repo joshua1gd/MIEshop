@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <ShopItem :offerings='offerings'/>
+    <ShopItem v-show='sorted' :offerings='offerings'/>
   </div>
 </template>
 
@@ -14,6 +14,7 @@ export default {
   data(){
     return{
       offerings: [],
+      sorted: false
     }
   },
   components: {
@@ -23,6 +24,9 @@ export default {
     aggregateOfferings(item){
       this.offerings.push(item)
       console.log('this is offerings: ', this.offerings)
+    },
+    sortOfferingsByTime(offerings){
+      offerings.sort((a,b) => {a.time > b.time})
     }
   },
   mounted(){
@@ -30,7 +34,12 @@ export default {
       (snapshot) => {snapshot.docs.forEach(
         (doc) => {
           this.aggregateOfferings(doc.data())
-          })});
+          })}
+      )
+      .then(() => {
+        this.sortOfferingsByTime(this.offerings)
+        this.sorted=true
+        });
   }
 }
 </script>
